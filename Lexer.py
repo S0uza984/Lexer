@@ -279,6 +279,9 @@ class Lexer:
             if caractere == "\n":
                 self._erro("quebra de linha dentro string", self._linha, self._coluna)
 
+            if caractere == "\r":
+                self._erro("retorno de carro dentro string", self._linha, self._coluna)
+
             if caractere == "\\":
                 linha_escape = self._linha
                 coluna_escape = self._coluna
