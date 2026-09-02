@@ -176,7 +176,7 @@ class Lexer:
         while not self._fim():
             caractere = self._atual()
 
-            if caractere in " \t\r\n":
+            if caractere in " \t\n":
                 self._avancar()
                 continue
 
@@ -184,6 +184,9 @@ class Lexer:
                 self._avancar()
                 self._avancar()
                 while not self._fim() and self._atual() != "\n":
+                    foraasc = self._atual()
+                    if ord(foraasc) > 127:
+                        self._erro("Caractere inválido no comentário")
                     self._avancar()
                 continue
 
@@ -199,6 +202,9 @@ class Lexer:
                         self._avancar()
                         self._avancar()
                         break
+                    foraasc = self._atual()
+                    if ord(foraasc) > 127:
+                        self._erro("Caractere inválido no comentário")
                     self._avancar()
                 else:
                     self._erro("Comentário de bloco não encerrado", linha_inicial, coluna_inicial)
@@ -272,6 +278,9 @@ class Lexer:
 
             if caractere == "\n":
                 self._erro("quebra de linha dentro string", self._linha, self._coluna)
+
+            if caractere == "\r":
+                self._erro("retorno de carro dentro string", self._linha, self._coluna)
 
             if caractere == "\\":
                 linha_escape = self._linha
